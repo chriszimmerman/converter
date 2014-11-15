@@ -1,4 +1,11 @@
 defmodule Converter do
+	@moduledoc """
+		Converts files from one format to another.
+	"""
+
+	@doc """
+	Takes in the path to a space-delimited file (such as a csv or tsv) along with a delimiter and places the data in an HTML file in a table.
+	"""
 	def convert path, delimiter do
 		{:ok, lines} = File.read(path)
 		lines = String.strip(lines)
