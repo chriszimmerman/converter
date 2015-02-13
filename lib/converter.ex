@@ -12,9 +12,10 @@ defmodule Converter do
 
 		{:ok, file} = File.open "result-#{get_date_as_string}.html", [:write]
 		IO.binwrite file, "<html><body>" 
-							<> "<table border=\"1\">" 
-							<> get_rows(lines, delimiter) <> "</table>" 
-							<> "</body></html>"
+		IO.binwrite file, "<table border=\"1\">" 
+		IO.binwrite file, get_rows(lines, delimiter)
+		IO.binwrite file, "</table>" 
+		IO.binwrite file, "</body></html>"
 	end
 	
 	defp get_rows(lines, delimiter) do
@@ -27,5 +28,12 @@ defmodule Converter do
 	defp get_date_as_string do
 		{{year, month, day}, {hour, minute, second}} = :calendar.local_time
 		"#{year}-#{month}-#{day}_#{hour}-#{minute}-#{second}"
+	end
+
+	def convert_row(csv_row) do
+		data = String.split(csv_row, ",")
+		|> Enum.map(fn datum -> "<td>#{datum}</td>" end) 
+		|> Enum.join
+		|> fn data -> "<tr>#{data}</tr>" end.()
 	end
 end
